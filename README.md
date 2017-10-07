@@ -28,3 +28,5 @@ Junit (for junit test cases)
 FileInputStream ,BufferedWriter( to write the output in to a file )
 
 Wunderground RestAPI ( to download weather data  weather underground application)
+
+Run the WeatherDataApp main program to see the desired output. Any number of locations can be added in the location.properties file.
