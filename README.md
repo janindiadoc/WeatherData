@@ -13,8 +13,12 @@ This is a prototype of a program which simulates the weather and outputs weather
 Weather Underground is the application used to fetch the conditions mentioned above. Website is https://www.wunderground.com/ . The API which provides all the above factors is retrived by using a REST Webservice call providing the city and api key as the input. The api key is generated from the website.
 REST call is made for a particular city to wunderground which provides the weather condition factors as response  in JSON format.Necessary fields has been retrieved from the response which is displayed in the standard format as requested. 
 
-The cities are provied in a property file called location.properties
-The output is written in a file called WeatherReport.txt
+The cities are provied in a property file called location.properties.
+The output is written in a file called WeatherReport.txt.
+WeatherDataApp is the main class.
+WeatherDataHelper is the helper class that does all the logic.
+DataConstants is the class for declaring the constants.
+WeatherReportVO is the setters and getters class.
 
 This application requires below
 JDK1.7
