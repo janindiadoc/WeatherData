@@ -21,7 +21,7 @@ public class WeatherDataHelperTest extends TestCase {
 	 * Test API connection with the correct API key and location.Should succeed
 	 */
 	public void testFetchAPIDataSuccess() {
-		wReportVO.setApiKey("5a747aee9dc6150a");
+		wReportVO.setApiKey("e5a3220b3c433bda");
 		wReportVO.setUrlPart2("/conditions/q/AU/");
 		wdHelper.fetchAPIData("Sydney", wReportVO);
 		assertTrue(true);
@@ -43,7 +43,7 @@ public class WeatherDataHelperTest extends TestCase {
 	 * fail
 	 */
 	public void testFetchAPIDataInvalidLocation() {
-		wReportVO.setApiKey("5a747aee9dc6150a");
+		wReportVO.setApiKey("e5a3220b3c433bda");
 		wReportVO.setUrlPart2("/conditions/q/AU/");
 		wdHelper.fetchAPIData("aaa", wReportVO);
 		assertTrue(false);

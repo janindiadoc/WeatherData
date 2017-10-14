@@ -51,13 +51,15 @@ public class WeatherDataHelper {
 	 * 
 	 * @location (eg: sydney,Melbourne etc)
 	 */
-	public void fetchAPIData(String location, WeatherReportVO reportVO) {
+	public String fetchAPIData(String location, WeatherReportVO reportVO) {
 		log.info("Method fetchAPIData Start");
+		String postionData = "";
 		try {
 			String apiKey = reportVO.getApiKey();
 			String urlPart2 = reportVO.getUrlPart2();
 			String constructURL = DataConstants.URL_PART1 + apiKey
 					+ urlPart2 + location + ".json";
+			System.out.println(constructURL);
 			URL url = new URL(constructURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
@@ -79,12 +81,13 @@ public class WeatherDataHelper {
 			buffReader.close();
 			conn.disconnect();
 			JSONObject jsonOutObj = buildJSON(content);
-			populateRequiredFields(jsonOutObj);
+			postionData = populateRequiredFields(jsonOutObj);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		log.info("Method fetchAPIData End");
+		return postionData;
 	}
 
 	/*
@@ -93,8 +96,9 @@ public class WeatherDataHelper {
 	 * 
 	 * @jsonOutObj
 	 */
-	public void populateRequiredFields(JSONObject jsonOutObj) {
+	public String populateRequiredFields(JSONObject jsonOutObj) {
 		log.info("Method populateRequiredFields Start");
+		String position = "";
 		if(jsonOutObj.length() != 0){
 			JSONObject currentObsObj = jsonOutObj
 					.getJSONObject(DataConstants.CURRENT_OBSERVATION);
@@ -102,7 +106,7 @@ public class WeatherDataHelper {
 					.getJSONObject(DataConstants.DISPLAY_LOCATION);
 			String concatFields = "";
 			String city = displayLocObj.getString(DataConstants.CITY);
-			String position = displayLocObj.getString(DataConstants.LATITUDE) + ","
+			position = displayLocObj.getString(DataConstants.LATITUDE) + ","
 					+ displayLocObj.getString(DataConstants.LONGITUDE) + ","
 					+ displayLocObj.getString(DataConstants.ELEVATION);
 			Instant instant = Instant.now();
@@ -119,6 +123,7 @@ public class WeatherDataHelper {
 			log.info("JSON object response is empty");
 		}
 		log.info("Method populateRequiredFields End");
+		return position;
 	}
 
 	/*
@@ -129,6 +134,7 @@ public class WeatherDataHelper {
 	 */
 	public void writeWeatherReportIntoFile(StringBuilder outputLine, WeatherReportVO reportVO) {
 		log.info("Method writeWeatherReportIntoFile Start");
+		System.out.println(outputLine);
 		try {
 			String outputFile = reportVO.getOutputFileName();
 			BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
