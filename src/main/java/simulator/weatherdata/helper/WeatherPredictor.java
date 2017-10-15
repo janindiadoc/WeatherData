@@ -168,7 +168,7 @@ public class WeatherPredictor {
 			String condition = rainCount > snowCount && rainCount > sunnyCount ? DataConstants.RAINY
 					: snowCount > rainCount && snowCount > sunnyCount ? DataConstants.SNOW
 							: sunnyCount > snowCount && sunnyCount > rainCount ? DataConstants.SUNNY
-									: "No value";
+									: "Clear";
 			double variedTemp = findVariation(tempList.size(), tempList);
 			double variedPressure = findVariation(pressList.size(), pressList);
 			double variedHumidity = findVariation(humidlist.size(), humidlist);
