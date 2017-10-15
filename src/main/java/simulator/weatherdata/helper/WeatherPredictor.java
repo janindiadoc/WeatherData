@@ -75,7 +75,8 @@ public class WeatherPredictor {
 			HashMap<String, HashMap<String, JSONObject>> dataForAllCities, WeatherReportVO reptVO) {
 
 		log.info("Method fetchJSONAndCalculateParameters Start");
-		Iterator<Entry<String, HashMap<String, JSONObject>>> it = dataForAllCities.entrySet().iterator();
+		Iterator<Entry<String, HashMap<String, JSONObject>>> it = dataForAllCities
+				.entrySet().iterator();
 		String concatFields = "";
 		while (it.hasNext()) {
 			Map.Entry pair = it.next();
@@ -83,31 +84,29 @@ public class WeatherPredictor {
 			int indexPi = weatherDataFromResp.indexOf('|');
 			int indexComma = weatherDataFromResp.indexOf(',');
 			int indexDoubleColon = weatherDataFromResp.indexOf(':');
-			String variationForTemp = weatherDataFromResp.substring(0 , indexPi);
-			String variationForPress = weatherDataFromResp.substring(indexPi + 1, indexComma);
-			String variationForHumid = weatherDataFromResp.substring(indexComma + 1, indexDoubleColon);
-			String condition = weatherDataFromResp.substring(indexDoubleColon+1, weatherDataFromResp.length());
-			long predictedTemp = Math.round(currentYearTemp
-					+ Double.parseDouble(variationForTemp));
-			long predictedPress = Math.round(currentYearPress
-					+ Double.parseDouble(variationForPress));
-			long predictedHumid = Math.round(currentYearHumid
-					+ Double.parseDouble(variationForHumid));
+			String variationForTemp = weatherDataFromResp.substring(0, indexPi);
+			String variationForPress = weatherDataFromResp.substring(
+					indexPi + 1, indexComma);
+			String variationForHumid = weatherDataFromResp.substring(
+					indexComma + 1, indexDoubleColon);
+			String condition = weatherDataFromResp.substring(
+					indexDoubleColon + 1, weatherDataFromResp.length());
+			long predictedTemp = Math.round(currentYearTemp+ Double.parseDouble(variationForTemp));
+			long predictedPress = Math.round(currentYearPress+ Double.parseDouble(variationForPress));
+			long predictedHumid = Math.round(currentYearHumid+ Double.parseDouble(variationForHumid));
 			String location = pair.getKey().toString();
 			String position = wdHelper.fetchAPIData(location, reptVO);
 			Instant predDate = Instant.parse(reptVO.getPredictionDate());
 			int indexYear = reptVO.getPredictionDate().indexOf('-');
-			int yeartoPredict = Integer.parseInt(reptVO.getPredictionDate().substring(0, indexYear));
-			if (yeartoPredict >= (Calendar.getInstance().get(Calendar.YEAR)) + 2) {
-				predictedTemp = Math.round(predictedTemp
-						+ Double.parseDouble(variationForTemp));
-				predictedPress = Math.round(predictedPress
-						+ Double.parseDouble(variationForPress));
-				predictedHumid = Math.round(predictedHumid
-						+ Double.parseDouble(variationForHumid));
-			}
-			concatFields = location + "|" + position + "|" + predDate + "|" + condition
-					+ "|" + predictedTemp + "|" + predictedPress + "|" + predictedHumid+"%";
+			int yeartoPredict = Integer.parseInt(reptVO.getPredictionDate()
+					.substring(0, indexYear));
+			int yearDiff = yeartoPredict - Calendar.getInstance().get(Calendar.YEAR);
+			predictedTemp = Math.round(predictedTemp+ (Double.parseDouble(variationForTemp) * yearDiff));
+			predictedPress = Math.round(predictedPress+ (Double.parseDouble(variationForPress) * yearDiff));
+			predictedHumid = Math.round(predictedHumid+ (Double.parseDouble(variationForHumid) * yearDiff));
+			concatFields = location + "|" + position + "|" + predDate + "|"
+					+ condition + "|" + predictedTemp + "|" + predictedPress
+					+ "|" + predictedHumid + "%";
 			reportData.append(concatFields);
 			reportData.append(System.getProperty(DataConstants.SEPARATOR));
 		}
